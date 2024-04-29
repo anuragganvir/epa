@@ -1,0 +1,15 @@
+#include <lpc214x.h>
+unsigned int delay;
+int main(void)
+{
+	PINSEL2 = 0;
+  IO1DIR = (0xFF<<24);   // Configure P0.15 to P0.22 as Output
+  
+  while(1)
+  {
+    IO1CLR = (0xFF<<24);    // CLEAR P0.15-P0.22 to turn LED OFF
+    for(delay=0; delay<1000000; delay++); // delay
+    IO1SET = (0xFF<<24);    // SET  P0.15-P0.22 to turn LED ON
+    for(delay=0; delay<1000000; delay++); // delay
+  }
+}
