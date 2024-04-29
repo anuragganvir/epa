@@ -13,3 +13,39 @@ int main(void)
     for(delay=0; delay<1000000; delay++); // delay
   }
 }
+
+
+OR
+
+
+#include<lpc214x.h>
+
+//LED Mapping for the board
+
+#define LED_MASK 0xFF000000
+#define LED0  24
+
+void delay(unsigned int time)
+{
+unsigned int i,j;
+	for(i = 0; i < time ;i++ )
+	{
+		for(j = 0; j < 5000 ; j++);
+	}
+}
+
+int main(void)
+{
+	//PINSEL2 &= 0xFFFFFFF3;	// set PORT1 as GPIO
+	PINSEL2 = 0;
+
+ 	IODIR1 = LED_MASK;			// set the direction of the pins as  output : 1
+
+	while(1)
+	{
+			IOSET1 = LED_MASK;					// set the port pins to 1
+			delay(1500);
+			IOCLR1 = LED_MASK;					//clear the port pins to 0
+			delay(1500);
+	} 
+}
