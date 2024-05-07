@@ -1,0 +1,30 @@
+#include <lpc214x.h> 
+
+// LED Mapping for the board
+#define LED_MASK_ON 0x0000000F // LEDs 0-3 (ON)
+#define LED_MASK_OFF 0x000000F0 // LEDs 4-7 (OFF)
+
+void delay(unsigned int time) {
+    unsigned int i, j;
+    for(i = 0; i < time; i++) {
+        for(j = 0; j < 5000; j++); 
+    }
+}
+
+int main(void) {
+    PINSEL2 = 0; // Reset all bits of PINSEL2 to configure Port 1 as GPIO
+
+    IODIR1 = LED_MASK_ON | LED_MASK_OFF; // Set the direction of the pins as output
+
+    while(1) {
+        // Turn ON LEDs 0-3 (LEDs 4-7 OFF)
+        IOSET1 = LED_MASK_ON;
+        IOCLR1 = LED_MASK_OFF;
+        delay(100);
+
+        // Turn OFF LEDs 0-3 (LEDs 4-7 ON)
+        IOCLR1 = LED_MASK_ON;
+        IOSET1 = LED_MASK_OFF;
+        delay(100);
+    }
+}
