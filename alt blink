@@ -1,0 +1,31 @@
+#include <lpc214x.h> // Include LPC2148 specifics header file
+
+// LED Mapping for the board
+#define LED_MASK 0xAA000000 // Define a mask for alternate LEDs on Port 1
+#define LED0 24 // Define the pin number for LED0
+
+void delay(unsigned int time) {
+    unsigned int i, j;
+    for(i = 0; i < time; i++) {
+        for(j = 0; j < 5000; j++); // Nested loop for delay
+    }
+}
+
+int main(void) {
+    PINSEL2 = 0; // Reset all bits of PINSEL2 to configure Port 1 as GPIO
+
+    IODIR1 = LED_MASK; // Set the direction of the pins as output
+
+    while(1) {
+        IOSET1 = LED_MASK; // Set alternate port pins to high (turn on alternate LEDs)
+        delay(100);
+        IOCLR1 = LED_MASK; // Clear the port pins to low (turn off alternate LEDs)
+        delay(100);
+
+        // Now toggle the LEDs to blink the other set of alternate LEDs
+        IOSET1 = ~LED_MASK; // Set the other alternate port pins to high
+        delay(100);
+        IOCLR1 = ~LED_MASK; // Clear the other alternate port pins to low
+        delay(100);
+    }
+}
