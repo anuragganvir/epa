@@ -1,0 +1,43 @@
+#include<LPC214x.h>
+
+void delay(unsigned int);
+void display(unsigned int);
+
+// Segment patterns for digits 0 to 9 on a common cathode seven-segment display
+unsigned int arr[] = {
+    0x3F, // 0
+    0x06, // 1
+    0x5B, // 2
+    0x4F, // 3
+    0x66, // 4
+    0x6D, // 5
+    0x7D, // 6
+    0x07, // 7
+    0x7F, // 8
+    0x6F  // 9
+};
+
+int main() {
+    // Set Port 1 pins P1.16 to P1.23 as output for the seven-segment display
+    IO1DIR = 0x00FF0000;
+
+    while(1) {
+        for(int i = 0; i < 10; i++) {
+            display(arr[i]); // Display the digit
+            delay(9000);     // Suitable delay between each count
+        }
+    }
+}
+
+void delay(unsigned int k) {
+    int i, j;
+    for(i = 0; i < k; i++)
+        for(j = 0; j < 1000; j++);
+}
+
+void display(unsigned int num) {
+    // Clear the display bits first
+    IO1CLR = 0x00FF0000;
+    // Set the bits for the current number to be displayed
+    IO1SET = num << 16;
+}
