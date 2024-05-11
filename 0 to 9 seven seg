@@ -17,25 +17,30 @@ unsigned int arr[] = {
     0x6F  // 9
 };
 
-int main() {
+int main()
+{
     // Set Port 1 pins P1.16 to P1.23 as output for the seven-segment display
     IO1DIR = 0x00FF0000;
 
-    while(1) {
-        for(int i = 0; i < 10; i++) {
+    while(1)
+{
+        for(int i = 0; i < 10; i++) 
+{
             display(arr[i]); // Display the digit
             delay(9000);     // Suitable delay between each count
         }
     }
 }
 
-void delay(unsigned int k) {
+void delay(unsigned int k)
+{
     int i, j;
     for(i = 0; i < k; i++)
         for(j = 0; j < 1000; j++);
 }
 
-void display(unsigned int num) {
+void display(unsigned int num)
+{
     // Clear the display bits first
     IO1CLR = 0x00FF0000;
     // Set the bits for the current number to be displayed
